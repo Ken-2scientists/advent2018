@@ -1,4 +1,8 @@
-(ns advent2018.day02)
+(ns advent2018.day02
+  (:require [clojure.string :as str]
+            [advent2018.lib.utils :as u]))
+
+(def day02-input (u/puzzle-input "day02_input.txt"))
 
 (defn repeat-count
   [repeat-num coll]
@@ -11,11 +15,11 @@
        (map second)
        (repeat-count repeat-num)))
 
-(defn soln02a
+(defn compute-checksum
   "Computes the 'checksum' which is defined as the product
    between the number of box-ids that contain any pair of matching
    characters and the number of box-ids that contain a triple of matching
-   characters" 
+   characters"
   [box-ids]
   (let [doubles (reduce + (map (partial repeat-counter 2) box-ids))
         triples (reduce + (map (partial repeat-counter 3) box-ids))]
@@ -34,7 +38,7 @@
   (->> (map list str1 str2)
        (filter #(= (first %) (second %)))
        (map first)
-       clojure.string/join))
+       str/join))
 
 (defn find-closest-boxids
   "Given a list of box-ids, find the pair that is only one off in edit distance"
@@ -45,3 +49,11 @@
         index1 (mod closest box-id-count)
         index2 (quot closest box-id-count)]
     (chars-in-common (nth box-ids index1) (nth box-ids index2))))
+
+(defn day02-part1-soln
+  []
+  (compute-checksum day02-input))
+
+(defn day02-part2-soln
+  []
+  (find-closest-boxids day02-input))

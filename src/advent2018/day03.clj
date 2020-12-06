@@ -1,5 +1,7 @@
 (ns advent2018.day03
-  (:require [clojure.string :as string]))
+  (:require [clojure.set :as set]
+            [clojure.string :as string]
+            [advent2018.lib.utils :as u]))
 
 (defn parse-input-line
   [line]
@@ -12,11 +14,13 @@
      :w (read-string w)
      :h (read-string h)}))
 
+(def day03-input (map parse-input-line (u/puzzle-input "day03_input.txt")))
+
 (defn grid
   [w h]
   (for [x (range w)
         y (range h)]
-       [x y]))
+    [x y]))
 
 (defn initialize-map
   []
@@ -26,11 +30,11 @@
   [{:keys [x y w h]}]
   (for [i (range x (+ x w))
         j (range y (+ y h))]
-       [i j]))
+    [i j]))
 
 (defn swath-grid-with-ids
   [{:keys [id x y w h]}]
-  (into {} 
+  (into {}
         (for [i (range x (+ x w))
               j (range y (+ y h))]
           [[i j] [id]])))
@@ -61,6 +65,14 @@
   [swaths]
   (let [all-ids (all-swath-ids swaths)
         overlap-ids (overlapping-swath-ids swaths)]
-       (first (clojure.set/difference all-ids overlap-ids))))
+    (first (clojure.set/difference all-ids overlap-ids))))
+
+(defn day03-part1-soln
+  []
+  (soln03a day03-input))
+
+(defn day03-part2-soln
+  []
+  (soln03b day03-input))
 
 
